@@ -1,14 +1,52 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          String    @id @default(cuid())
+  username    String    @unique
+  fullName    String?   // Changed from 'name' to 'fullName'
+  password    String
+  createdDate DateTime  @default(now()) // Changed from 'createdAt' to 'createdDate'
+  updatedDate DateTime  @updatedAt      // Changed from 'updatedAt' to 'updatedDate'
+  posts       Post[]
+  likes       Like[]
+  comments    Comment[]
+}
+
+model Post {
+  title         String    @unique
+  description   String?
+  createdDate   DateTime  @default(now()) // Changed from 'createdAt' to 'createdDate'
+  updatedDate   DateTime  @updatedAt      // Changed from 'updatedAt' to 'updatedDate'
+  postId        String    @id @default(cuid())
+  authorId      User      @relation(fields: [postId], references: [id], onDelete: Cascade) // Changed 'userId' to 'authorId'
+  likes         Like[]
+  comments      Comment[]
+}
+
+model Like {
+  likeId     String   @id // Changed from 'likeid' to 'likeId'
+  postId     String
+  userId     String
+  likedDate  DateTime @default(now()) // Changed from 'likedAt' to 'likedDate'
+  post       Post     @relation(fields: [postId], references: [postId], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  commentId   String   @id @default(cuid()) // Changed from 'id' to 'commentId'
+  content     String
+  createdDate DateTime @default(now()) // Changed from 'createdAt' to 'createdDate'
+  updatedDate DateTime @updatedAt      // Changed from 'updatedAt' to 'updatedDate'
+  postId      String
+  userId      String
+  post        Post     @relation(fields: [postId], references: [postId], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
