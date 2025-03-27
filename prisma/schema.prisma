@@ -1,11 +1,13 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
 model User {
   id        String    @id @default(cuid())
   username  String    @unique
@@ -17,16 +19,19 @@ model User {
   Like      Like[]
   Comment   Comment[]
 }
+
 model Post {
-  title       String    @unique
+  id          String    @id @default(uuid())
+  title       String
   description String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  postId      String    @id @default(cuid())
-  userId      User      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userid      String
+  userId      User      @relation(fields: [userid], references: [id], onDelete: Cascade)
   Like        Like[]
   Comment     Comment[]
 }
+
 model Like {
   likeid  String   @id
   postId  String
@@ -35,6 +40,7 @@ model Like {
   Post    Post     @relation(fields: [postId], references: [postId], onDelete: Cascade)
   User    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
 model Comment {
   id        String   @id @default(cuid())
   content   String
@@ -45,16 +51,3 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [postId], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
