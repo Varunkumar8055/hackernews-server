@@ -9,8 +9,8 @@ import {
 // Function to create a new comment for a post
 export const createComment = async (params: {
   content: string; // Content of the comment
-  postId: string;  // ID of the post to which the comment belongs
-  userId: string;  // ID of the user creating the comment
+  postId: string; // ID of the post to which the comment belongs
+  userId: string; // ID of the user creating the comment
 }): Promise<CreatCommentResult> => {
   try {
     // Check if the post exists
@@ -42,8 +42,8 @@ export const createComment = async (params: {
 // Function to get all comments for a specific post (paginated and in reverse chronological order)
 export const getAllComments = async (params: {
   postId: string; // ID of the post
-  page: number;   // Current page number for pagination
-  limit: number;  // Number of comments per page
+  page: number; // Current page number for pagination
+  limit: number; // Number of comments per page
 }): Promise<{ comments: any[] }> => {
   try {
     // Calculate pagination parameters
@@ -52,14 +52,14 @@ export const getAllComments = async (params: {
     // Fetch comments from the database
     const comments = await prisma.comment.findMany({
       where: { postId: params.postId }, // Filter by postId
-      orderBy: { createdAt: "desc" },  // Sort by creation date in descending order
-      skip,                            // Skip the specified number of records
-      take,                            // Limit the number of records
+      orderBy: { createdAt: "desc" }, // Sort by creation date in descending order
+      skip, // Skip the specified number of records
+      take, // Limit the number of records
       include: {
         user: {
           select: {
-            id: true,        // Include user ID
-            username: true,  // Include username
+            id: true, // Include user ID
+            username: true, // Include username
           },
         },
       },
@@ -80,7 +80,7 @@ export const getAllComments = async (params: {
 // Function to delete a comment
 export const deleteComment = async (params: {
   commentId: string; // ID of the comment to delete
-  userId: string;    // ID of the user attempting to delete the comment
+  userId: string; // ID of the user attempting to delete the comment
 }): Promise<CommentStatus> => {
   try {
     // Find the comment in the database
@@ -106,8 +106,8 @@ export const deleteComment = async (params: {
 // Function to update a comment
 export const updateComment = async (params: {
   commentId: string; // ID of the comment to update
-  userId: string;    // ID of the user attempting to update the comment
-  content: string;   // New content for the comment
+  userId: string; // ID of the user attempting to update the comment
+  content: string; // New content for the comment
 }): Promise<CommentStatus> => {
   try {
     // Find the comment in the database

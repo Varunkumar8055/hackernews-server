@@ -1,32 +1,55 @@
-import type { Post } from "@prisma/client";
+import { getPagination } from "../../extras/pagination";
+import { prisma } from "../../extras/prisma";
+import {
+  GetAllUsersError,
+  GetMeError,
+  type GetAllUsersResult,
+  type GetMeResult,
+} from "./users-type";
 
-// Type representing the result of creating a post
-export type PostCreateResult = {
-  post: Post; // The created post object
+export const GetMe = async (parameters: {
+  userId: string;
+}): Promise<GetMeResult> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: parameters.userId },
+    });
+
+    if (!user) {
+      throw GetMeError.USER_NOT_FOUND;
+    }
+
+    const result: GetMeResult = {
+      user: user,
+    };
+
+    return result;
+  } catch (e) {
+    console.error(e);
+    throw GetMeError.UNKNOWN;
+  }
 };
 
-// Enum representing various statuses related to post creation
-export enum PostStatus {
-  USER_NOT_FOUND = "USER_NOT_FOUND", // Indicates that the user creating the post was not found
-  POST_CREATED = "POST_CREATED", // Indicates that the post was successfully created
-  POST_CREATION_FAILED = "POST_CREATION_FAILED", // Indicates that the post creation failed
-}
+export const GetUsers = async (parameter: {
+  page: number;
+  limit: number;
+}): Promise<GetAllUsersResult> => {
+  try {
+    const { skip, take } = getPagination(parameter.page, parameter.limit);
 
-// Type representing the result of fetching multiple posts
-export type GetPostsResult = {
-  posts: Post[]; // An array of post objects
+    const users = await prisma.user.findMany({
+      orderBy: { name: "asc" },
+      skip,
+      take,
+    });
+
+    if (!users || users.length === 0) {
+      throw GetAllUsersError.NO_USERS_FOUND;
+    }
+
+    return { users };
+  } catch (e) {
+    console.error(e);
+    throw GetAllUsersError.UNKNOWN;
+  }
 };
-
-// Enum representing possible errors when fetching posts
-export enum GetPostsError {
-  NO_POSTS_FOUND = "NO_POSTS_FOUND", // Indicates that no posts were found
-  UNKNOWN = "UNKNOWN", // Represents an unknown error
-}
-
-// Enum representing possible errors when deleting a post
-export enum DeletePostError {
-  UNAUTHORIZED = "UNAUTHORIZED", // Indicates that the user is not authorized to delete the post
-  POST_NOT_FOUND = "POST_NOT_FOUND", // Indicates that the post to be deleted was not found
-  DELETE_SUCCESS = "DELETE_SUCCESS", // Indicates that the post was successfully deleted
-  DELETE_FAILED = "DELETE_FAILED", // Indicates that the post deletion failed
-}

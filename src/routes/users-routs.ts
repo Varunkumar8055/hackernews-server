@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { tokenMiddleware } from "./middlewares/token-middleware";
+import { tokenMiddleware } from "./middlewares/token-middlewares";
 import { GetMe, GetUsers } from "../controllers/users/users-controllers";
 import { GetAllUsersError, GetMeError } from "../controllers/users/users-type";
 

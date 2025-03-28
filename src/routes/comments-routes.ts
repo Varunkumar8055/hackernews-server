@@ -1,68 +1,72 @@
 import { Hono } from "hono";
+import { CommentStatus } from "../controllers/comments/comments-type";
+import { tokenMiddleware } from "../routes/middlewares/token-middlewares";
 import {
-  logInWithUsernameAndPassword,
-  signUpWithUsernameAndPassword,
-} from "../controllers/authentication/authentications-controllers";
-import {
-  LogInWithUsernameAndPasswordError,
-  SignUpWithUsernameAndPasswordError,
-} from "../controllers/authentication/authentication-types";
+  createComment,
+  deleteComment,
+  getAllComments,
+  updateComment,
+} from "../controllers/comments/comments-controllers";
 
-// Create a new instance of Hono for defining authentication routes
-export const authenticationRoutes = new Hono();
+export const commentRoutes = new Hono();
 
-// Route to handle user sign-up
-authenticationRoutes.post("/sign-in", async (c) => {
-  const { username, password, name } = await c.req.json(); // Extract username, password, and name from the request body
+commentRoutes.post("/on/:postId", tokenMiddleware, async (c) => {
   try {
-    // Call the sign-up controller function to create a new user
-    const result = await signUpWithUsernameAndPassword({
-      username,
-      password,
-      name,
-    });
+    const postId = c.req.param("postId");
+    const userId = c.get("userId");
+    const { content } = await c.req.json();
 
-    // Return the result with a 200 status code
-    return c.json({ data: result }, 200);
+    const result = await createComment({ content, postId, userId });
+    return c.json(result);
   } catch (error) {
-    // Handle specific errors during sign-up
-    if (error === SignUpWithUsernameAndPasswordError.CONFLICTING_USERNAME) {
-      return c.json({ error: "Username already exists" }, 409); // Conflict error
+    if (error === CommentStatus.POST_NOT_FOUND) {
+      return c.json({ message: "Post not found" }, 404);
+    }
+    if (error === CommentStatus.COMMENT_CREATION_FAILED) {
+      return c.json({ message: "Comment creation failed" }, 500);
     }
 
-    if (error === SignUpWithUsernameAndPasswordError.UNKNOWN) {
-      return c.json({ error: "Unknown error" }, 500); // Internal server error
-    }
+    return c.json({ message: "Unknown error" }, 500);
   }
 });
 
-// Route to handle user log-in
-authenticationRoutes.post("/log-in", async (c) => {
+//get all comments for a post
+commentRoutes.get("/on/:postId", tokenMiddleware, async (c) => {
+  const postId = c.req.param("postId");
+  const page = Number(c.req.query("page")) || 1;
+  const limit = Number(c.req.query("limit")) || 10;
+
   try {
-    const { username, password } = await c.req.json(); // Extract username and password from the request body
-
-    // Call the log-in controller function to authenticate the user
-    const result = await logInWithUsernameAndPassword({
-      username,
-      password,
-    });
-
-    // Return the result with a 200 status code
-    return c.json(
-      {
-        data: result,
-      },
-      200
-    );
+    const result = await getAllComments({ postId, page, limit });
+    return c.json({ status: "SUCCESS", comments: result.comments }, 200);
   } catch (error) {
-    // Handle specific errors during log-in
-    if (
-      error === LogInWithUsernameAndPasswordError.INCORRECT_USERNAME_OR_PASSWORD
-    ) {
-      return c.json({ error: "Incorrect username or password" }, 401); // Unauthorized error
-    }
+    return c.json({ status: error }, 404);
+  }
+});
 
-    // Handle unknown errors
-    return c.json({ error: "Unknown error" }, 500); // Internal server error
+//delete
+commentRoutes.delete("/:commentId", tokenMiddleware, async (c) => {
+  const commentId = c.req.param("commentId");
+  const userId = c.get("userId");
+
+  try {
+    const result = await deleteComment({ commentId, userId });
+    return c.json({ status: result }, 200);
+  } catch (error) {
+    return c.json({ status: error }, 403);
+  }
+});
+
+//update the comment
+commentRoutes.patch("/:commentId", tokenMiddleware, async (c) => {
+  const commentId = c.req.param("commentId");
+  const userId = c.get("userId");
+  const { content } = await c.req.json();
+
+  try {
+    const result = await updateComment({ commentId, userId, content });
+    return c.json({ status: result }, 200);
+  } catch (error) {
+    return c.json({ status: error }, 403);
   }
 });
