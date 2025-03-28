@@ -23,8 +23,8 @@ const createJWToken = (parameters: {
 }): string => {
   const jwtPayload: jwt.JwtPayload = {
     iss: "https://purpleshorts.co.in", // Issuer of the token
-    sub: parameters.id,               // Subject (user ID)
-    username: parameters.username,    // Username of the user
+    sub: parameters.id, // Subject (user ID)
+    username: parameters.username, // Username of the user
   };
 
   // Sign the token with the secret key and set an expiration of 30 days
@@ -71,8 +71,8 @@ export const signUpWithUsernameAndPassword = async (parameters: {
     // Create a JWT payload for the new user
     const jwtPayload: jwt.JwtPayload = {
       iss: "http://purpleshorts.co.in", // Issuer of the token
-      sub: user.id,                    // Subject (user ID)
-      username: user.username,         // Username of the user
+      sub: user.id, // Subject (user ID)
+      username: user.username, // Username of the user
     };
 
     // Sign the token with the secret key and set an expiration of 30 days
