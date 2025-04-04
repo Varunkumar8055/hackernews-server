@@ -7,7 +7,7 @@ on:
 
 env:
   AZURE_REGION: centralindia
-  RESOURCE_GROUP: Holmium
+  RESOURCE_GROUP: GitHubActions
   CONTAINER_APPS_ENVIRONMENT: holmium-env
   LOG_ANALYTICS_WORKSPACE: holmium-law
   ACR_REGISTRY: 1si22ad405.azurecr.io
