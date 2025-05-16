@@ -32,12 +32,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.5.0
- * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
+ * Prisma Client JS version: 6.6.0
+ * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
  */
 Prisma.prismaVersion = {
-  client: "6.5.0",
-  engine: "173f8d54f8d52e692c7e27e72a88314ec7aeff60"
+  client: "6.6.0",
+  engine: "f676762280b54cd07c770017ed3711ddde35f37a"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -200,7 +200,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\msvar\\OneDrive\\Documents\\developer\\week4\\hackernews-server\\src\\generated\\prisma",
+      "value": "C:\\Users\\arifc\\OneDrive\\Documents\\Dev_Developer\\hackernews-server\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -214,16 +214,16 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\msvar\\OneDrive\\Documents\\developer\\week4\\hackernews-server\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\arifc\\OneDrive\\Documents\\Dev_Developer\\hackernews-server\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
-  "clientVersion": "6.5.0",
-  "engineVersion": "173f8d54f8d52e692c7e27e72a88314ec7aeff60",
+  "clientVersion": "6.6.0",
+  "engineVersion": "f676762280b54cd07c770017ed3711ddde35f37a",
   "datasourceNames": [
     "db"
   ],
@@ -232,7 +232,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://postgres.hcjyuyqaopinpmbkgrav:Thirthahalli@aws-0-ap-south-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
       }
     }
   },

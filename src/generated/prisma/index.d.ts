@@ -301,8 +301,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.5.0
-   * Query Engine version: 173f8d54f8d52e692c7e27e72a88314ec7aeff60
+   * Prisma Client JS version: 6.6.0
+   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
    */
   export type PrismaVersion = {
     client: string
@@ -2230,7 +2230,7 @@ export namespace Prisma {
 
   /**
    * Fields of the User model
-   */ 
+   */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
@@ -3427,7 +3427,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Post model
-   */ 
+   */
   interface PostFieldRefs {
     readonly id: FieldRef<"Post", 'String'>
     readonly title: FieldRef<"Post", 'String'>
@@ -4542,7 +4542,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Like model
-   */ 
+   */
   interface LikeFieldRefs {
     readonly id: FieldRef<"Like", 'String'>
     readonly postId: FieldRef<"Like", 'String'>
@@ -5620,7 +5620,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Comment model
-   */ 
+   */
   interface CommentFieldRefs {
     readonly id: FieldRef<"Comment", 'String'>
     readonly content: FieldRef<"Comment", 'String'>
@@ -6734,7 +6734,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Session model
-   */ 
+   */
   interface SessionFieldRefs {
     readonly id: FieldRef<"Session", 'String'>
     readonly expiresAt: FieldRef<"Session", 'DateTime'>
@@ -7891,7 +7891,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Account model
-   */ 
+   */
   interface AccountFieldRefs {
     readonly id: FieldRef<"Account", 'String'>
     readonly accountId: FieldRef<"Account", 'String'>
@@ -8954,7 +8954,7 @@ export namespace Prisma {
 
   /**
    * Fields of the Verification model
-   */ 
+   */
   interface VerificationFieldRefs {
     readonly id: FieldRef<"Verification", 'String'>
     readonly identifier: FieldRef<"Verification", 'String'>
@@ -9463,7 +9463,7 @@ export namespace Prisma {
 
 
   /**
-   * Field references 
+   * Field references
    */
 
 
